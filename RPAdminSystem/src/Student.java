@@ -38,4 +38,22 @@ public class Student {
     public void setUserid (String userid) {
         this.userid = userid;
     }
+    
+    public String getName () {
+        return name;
+    }
+    
+    public void setname (String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public boolean equals (Object o) {
+        if (!(o instanceof Student)) {
+            return false;
+        }
+        
+        Student s = (Student) o;
+        return userid.equals(s.userid) && name.equals(s.name);
+    }
 }

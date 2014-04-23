@@ -35,18 +35,6 @@ public class Record {
         this(userid, category, "", desc1, "", "", year, "");
     }
     
-    @Override
-    public String toString () {
-        return "UserID: " + userid + ",\n" +
-                "Category: " + category + ",\n" +
-                "Title: " + title + ",\n" +
-                "Desc1: " + desc1 + ",\n" +
-                "Desc2: " + desc2 + ",\n" +
-                "Award: " + award + ",\n" +
-                "Year: " + year + ",\n" +
-                "Grade: " + grade + "\n";
-    }
-    
     public static Record fromArray (Object[] array) {
         if (array.length != 8) throw new IllegalArgumentException ("Wrong sized array");
         return new Record (
@@ -126,7 +114,32 @@ public class Record {
         return this.year;
     }
     
-    public void set (int year) {
+    public void setYear (int year) {
         this.year = year;
+    }
+    
+    public String getGrade () {
+        return this.grade;
+    }
+    
+    public void setGrade (String grade) {
+        this.grade = grade;
+    }
+    
+    @Override
+    public boolean equals (Object o) {
+        if (!(o instanceof Record)) {
+            return false;
+        }
+        
+        Record r = (Record) o;
+        return userid.equals(r.userid) &&
+                category.equals(r.category) &&
+                title.equals(r.title) &&
+                desc1.equals(r.desc1) &&
+                desc2.equals(r.desc2) &&
+                award.equals(r.award) &&
+                year == r.year &&
+                grade.equals(r.grade);
     }
 }
