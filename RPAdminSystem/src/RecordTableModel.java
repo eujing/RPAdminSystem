@@ -1,4 +1,6 @@
 
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -8,14 +10,19 @@ import javax.swing.table.AbstractTableModel;
 public class RecordTableModel extends AbstractTableModel {
 
     private String[] columnNames;
-    private Object[][] data;
+    private ArrayList<Record> data;
+    private RecordsManager rm = new RecordsManager ();
+    
+    public void setRIERecords () throws IOException {
+        setData (rm.readRIERecords());
+    }
     
     public void setColumnNames (String[] columnNames) {
         this.columnNames = columnNames;
         this.fireTableStructureChanged();
     }
     
-    public void setData (Object[][] data) {
+    public void setData (ArrayList<Record> data) {
         this.data = data;
         this.fireTableDataChanged();
     }
@@ -25,7 +32,7 @@ public class RecordTableModel extends AbstractTableModel {
         if (data == null) {
             return 0;
         }
-        return data.length;
+        return data.size();
     }
 
     @Override
@@ -46,7 +53,7 @@ public class RecordTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return data[rowIndex][columnIndex];
+        return data.get(rowIndex).toArray()[columnIndex];
     }
     
     @Override
@@ -61,7 +68,9 @@ public class RecordTableModel extends AbstractTableModel {
     
     @Override
     public void setValueAt (Object value, int row, int col) {
-        data[row][col] = value;
+        Object[] array = data.get(row).toArray();
+        array[col] = value;
+        data.set(row, Record.fromArray(array));
         fireTableCellUpdated(row, col);
     }
 }

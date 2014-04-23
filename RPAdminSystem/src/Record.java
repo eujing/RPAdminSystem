@@ -45,6 +45,19 @@ public class Record {
                 "Grade: " + grade + "\n";
     }
     
+    public static Record fromArray (Object[] array) {
+        return new Record (
+                (String) array[0],
+                (String) array[1],
+                (String) array[2],
+                (String) array[3],
+                (String) array[4],
+                (String) array[5],
+                (Integer) array[6],
+                (String) array[7]
+        );
+    }
+    
     public Object[] toArray () {
         return new Object[] {
             (Object) userid,

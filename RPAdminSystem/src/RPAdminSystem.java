@@ -1,23 +1,18 @@
 
-import java.io.IOException;
-import java.util.ArrayList;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.table.TableColumn;
 
 /**
  *
  * @author eujing
  */
 public class RPAdminSystem extends javax.swing.JFrame {
-    RecordsManager rm = new RecordsManager ();
-    RecordTableModel model = new RecordTableModel();
+    RecordTableController controller;
     public RPAdminSystem() {
         initComponents();
-        tbRecords.setModel(model);
-        displayRIERecords ();
+        controller = new RecordTableController(tbRecords);
+        tbRecords.setModel(controller.getModel());
+        controller.displayRIERecords ();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,9 +67,9 @@ public class RPAdminSystem extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(bDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -84,11 +79,11 @@ public class RPAdminSystem extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bDelete)
                     .addComponent(bAdd))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Administrator Panel"));
@@ -154,7 +149,7 @@ public class RPAdminSystem extends javax.swing.JFrame {
         String selected = (String) cb.getSelectedItem();
         switch (selected) {
             case "RIE Records":
-                displayRIERecords ();
+                controller.displayRIERecords ();
                 break;
             case "Non submissions":
                 break;
@@ -163,27 +158,6 @@ public class RPAdminSystem extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbDisplayActionPerformed
 
-    private void displayRIERecords () {
-        try {
-            ArrayList<Record> records = rm.getRIERecords();
-            model.setColumnNames(new String[] {"UserID", "Category", "Title", "Desc1", "Desc2", "Award", "Year", "Grade"});
-            TableColumn gradeColumn = tbRecords.getColumnModel().getColumn(7);
-            JComboBox cbGrades = new JComboBox();
-            cbGrades.addItem("");
-            cbGrades.addItem("Excellent");
-            cbGrades.addItem("Merit");
-            cbGrades.addItem("Satisfactory");
-            gradeColumn.setCellEditor(new DefaultCellEditor(cbGrades));
-            Object[][] data = new Object[records.size()][];
-            for (int i = 0; i < records.size(); i++) {
-                data[i] = records.get(i).toArray();
-            }
-            model.setData(data);
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
     
     /**
      * @param args the command line arguments

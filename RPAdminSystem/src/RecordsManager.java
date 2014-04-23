@@ -6,11 +6,14 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import jxl.*;
 import jxl.read.biff.BiffException;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
 
 public class RecordsManager {
-    public ArrayList<Record> getRIERecords () throws IOException {
+    public ArrayList<Record> readRIERecords () throws IOException {
         ArrayList<Record> records = new ArrayList<> ();
         
         try {
@@ -35,15 +38,14 @@ public class RecordsManager {
         return records;
     }
     
-    public static void main (String[] args) {
-        RecordsManager rm = new RecordsManager ();
-        try {
-            for (Record r : rm.getRIERecords ()) {
-                System.out.println(r.toString());
-            }
-        }
-        catch (IOException ex) {
-            System.out.println("File not found");
+    public void writeRIERecords (ArrayList<Record> records) throws IOException {
+        WorkbookSettings settings = new WorkbookSettings ();
+        WritableWorkbook wb = Workbook.createWorkbook(new File ("RIE_records.xls"));
+        wb.createSheet("RIE Records", 0);
+        WritableSheet sheet = wb.getSheet(0);
+        
+        for (int i = 0; i < records.size(); i++) {
+            
         }
     }
 }
