@@ -18,6 +18,8 @@ public class Record {
     int year;
     String grade;
     
+    public static final String[] columnNames = new String[] {"UserID", "Category", "Title", "Desc1", "Desc2", "Award", "Year", "Grade"};
+    
     public Record (String userid, String category, String title, String desc1, String desc2, String award, int year, String grade) {
         this.userid = userid;
         this.category = category;
@@ -46,6 +48,7 @@ public class Record {
     }
     
     public static Record fromArray (Object[] array) {
+        if (array.length != 8) throw new IllegalArgumentException ("Wrong sized array");
         return new Record (
                 (String) array[0],
                 (String) array[1],
@@ -66,7 +69,7 @@ public class Record {
         (Object) desc1,
         (Object) desc2,
         (Object) award,
-        (Object) new Integer(year),
+        (Object) year,
         (Object) grade
         };
     }
@@ -80,7 +83,7 @@ public class Record {
     }
     
     public String getCategory () {
-        return this.userid;
+        return this.category;
     }
     
     public void setCategory (String category) {

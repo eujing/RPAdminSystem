@@ -1,6 +1,3 @@
-
-import javax.swing.JComboBox;
-
 /**
  *
  * @author eujing
@@ -11,7 +8,7 @@ public class RPAdminSystem extends javax.swing.JFrame {
         initComponents();
         controller = new RecordTableController(tbRecords);
         tbRecords.setModel(controller.getModel());
-        controller.displayRIERecords ();
+        controller.changeDisplay("RIE Records");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,12 +75,12 @@ public class RPAdminSystem extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bDelete)
                     .addComponent(bAdd))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Administrator Panel"));
@@ -98,6 +95,11 @@ public class RPAdminSystem extends javax.swing.JFrame {
         });
 
         bExport.setText("Export");
+        bExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bExportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -145,18 +147,15 @@ public class RPAdminSystem extends javax.swing.JFrame {
 
     private void cbDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDisplayActionPerformed
         // TODO add your handling code here:
-        JComboBox cb = (JComboBox) evt.getSource();
-        String selected = (String) cb.getSelectedItem();
-        switch (selected) {
-            case "RIE Records":
-                controller.displayRIERecords ();
-                break;
-            case "Non submissions":
-                break;
-            case "Synopsis Discrepencies":
-                break;
-        }
+        String selected = (String) cbDisplay.getSelectedItem();
+        controller.changeDisplay(selected);
     }//GEN-LAST:event_cbDisplayActionPerformed
+
+    private void bExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportActionPerformed
+        // TODO add your handling code here:
+        String selected = (String) cbDisplay.getSelectedItem();
+        controller.exportRecords(selected);
+    }//GEN-LAST:event_bExportActionPerformed
 
     
     /**

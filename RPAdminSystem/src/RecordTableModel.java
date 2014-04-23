@@ -10,11 +10,45 @@ import javax.swing.table.AbstractTableModel;
 public class RecordTableModel extends AbstractTableModel {
 
     private String[] columnNames;
-    private ArrayList<Record> data;
-    private RecordsManager rm = new RecordsManager ();
+    private Object[][] data;
+    private ResourcesManager rm = new ResourcesManager ();
     
-    public void setRIERecords () throws IOException {
-        setData (rm.readRIERecords());
+    public void setRIERecords (ArrayList<Record> records) throws IOException {
+        Object[][] array = new Object[records.size()][];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = records.get(i).toArray();
+        }
+        setData (array);
+    }
+    
+    public void exportRIERecords () throws IOException {
+        if (!columnNames.equals(Record.columnNames)) {
+            throw new IllegalStateException ("Not storing RIE Records now");
+        }
+        ArrayList<Record> records = new ArrayList<> ();
+        for (int i = 0; i < data.length; i++) {
+            records.add(Record.fromArray(data[i]));
+        }
+        rm.writeRIERecords(records);
+    }
+    
+    public void setStudents (ArrayList<Student> students) throws IOException {
+        Object[][] array = new Object[students.size()][];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = students.get(i).toArray();
+        }
+        setData (array);
+    }
+    
+    public void exportStudents () throws IOException {
+        if (!columnNames.equals(Student.columnNames)) {
+            throw new IllegalStateException ("Not storing Students now");
+        }
+        ArrayList<Student> students = new ArrayList<> ();
+        for (int i = 0; i < data.length; i++) {
+            students.add(Student.fromArray(data[i]));
+        }
+        rm.writeStudents(students);
     }
     
     public void setColumnNames (String[] columnNames) {
@@ -22,9 +56,13 @@ public class RecordTableModel extends AbstractTableModel {
         this.fireTableStructureChanged();
     }
     
-    public void setData (ArrayList<Record> data) {
+    public void setData (Object[][] data) {
         this.data = data;
         this.fireTableDataChanged();
+    }
+    
+    public ResourcesManager getResourcesManager () {
+        return rm;
     }
     
     @Override
@@ -32,7 +70,7 @@ public class RecordTableModel extends AbstractTableModel {
         if (data == null) {
             return 0;
         }
-        return data.size();
+        return data.length;
     }
 
     @Override
@@ -53,7 +91,7 @@ public class RecordTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return data.get(rowIndex).toArray()[columnIndex];
+        return data[rowIndex][columnIndex];
     }
     
     @Override
@@ -68,9 +106,7 @@ public class RecordTableModel extends AbstractTableModel {
     
     @Override
     public void setValueAt (Object value, int row, int col) {
-        Object[] array = data.get(row).toArray();
-        array[col] = value;
-        data.set(row, Record.fromArray(array));
+        data[row][col] = value;
         fireTableCellUpdated(row, col);
     }
 }
