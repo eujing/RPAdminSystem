@@ -25,7 +25,6 @@ public class RecordsManager {
                 String desc2 = c[4].getContents();
                 String award = c[5].getContents();
                 int year = Integer.parseInt(c[6].getContents());
-                //TODO: Check for grade
                 records.add(new Record(userid, category, title, desc1, desc2, award, year, ""));
             }
         }

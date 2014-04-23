@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.table.TableColumn;
@@ -10,15 +11,11 @@ import javax.swing.table.TableColumn;
  */
 public class RPAdminSystem extends javax.swing.JFrame {
     RecordsManager rm = new RecordsManager ();
+    RecordTableModel model = new RecordTableModel();
     public RPAdminSystem() {
         initComponents();
-        TableColumn gradeColumn = tbRecords.getColumnModel().getColumn(7);
-        JComboBox cbGrades = new JComboBox();
-        cbGrades.addItem("Excellent");
-        cbGrades.addItem("Merit");
-        cbGrades.addItem("Satisfactory");
-        gradeColumn.setCellEditor(new DefaultCellEditor(cbGrades));
-        //TODO: Make custom table
+        tbRecords.setModel(model);
+        displayRIERecords ();
     }
 
     /**
@@ -73,13 +70,15 @@ public class RPAdminSystem extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bDelete)
+                .addComponent(bAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(bDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,8 +165,20 @@ public class RPAdminSystem extends javax.swing.JFrame {
 
     private void displayRIERecords () {
         try {
-            rm.getRIERecords();
-            //TODO: add stuff to table
+            ArrayList<Record> records = rm.getRIERecords();
+            model.setColumnNames(new String[] {"UserID", "Category", "Title", "Desc1", "Desc2", "Award", "Year", "Grade"});
+            TableColumn gradeColumn = tbRecords.getColumnModel().getColumn(7);
+            JComboBox cbGrades = new JComboBox();
+            cbGrades.addItem("");
+            cbGrades.addItem("Excellent");
+            cbGrades.addItem("Merit");
+            cbGrades.addItem("Satisfactory");
+            gradeColumn.setCellEditor(new DefaultCellEditor(cbGrades));
+            Object[][] data = new Object[records.size()][];
+            for (int i = 0; i < records.size(); i++) {
+                data[i] = records.get(i).toArray();
+            }
+            model.setData(data);
         }
         catch (IOException ex) {
             ex.printStackTrace();

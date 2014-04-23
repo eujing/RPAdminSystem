@@ -33,6 +33,7 @@ public class Record {
         this(userid, category, "", desc1, "", "", year, "");
     }
     
+    @Override
     public String toString () {
         return "UserID: " + userid + ",\n" +
                 "Category: " + category + ",\n" +
@@ -42,6 +43,19 @@ public class Record {
                 "Award: " + award + ",\n" +
                 "Year: " + year + ",\n" +
                 "Grade: " + grade + "\n";
+    }
+    
+    public Object[] toArray () {
+        return new Object[] {
+            (Object) userid,
+        (Object) category,
+        (Object) title,
+        (Object) desc1,
+        (Object) desc2,
+        (Object) award,
+        (Object) new Integer(year),
+        (Object) grade
+        };
     }
     
     public String getUserid () {
