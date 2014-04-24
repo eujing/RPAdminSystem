@@ -20,15 +20,18 @@ public class ResourcesManager {
         try {
             Workbook wb = Workbook.getWorkbook(inFile);
             Sheet sheet = wb.getSheet(0);
+            if (sheet.getColumns() != 7 || sheet.getColumns() != 8) {
+                throw new IllegalArgumentException ("Invalid RIE records file");
+            }
             for (int i = 1; i < sheet.getRows(); i++) {
                 Cell[] c = sheet.getRow(i);
-                String userid = c[0].getContents();
+                String userid = verifyUserid(c[0].getContents());
                 String category = c[1].getContents();
                 String title = c[2].getContents();
                 String desc1 = c[3].getContents();
                 String desc2 = c[4].getContents();
                 String award = c[5].getContents();
-                int year = Integer.parseInt(c[6].getContents());
+                int year = verifyYear(c[6].getContents());
                 String grade = "";
                 if (c.length >= 8) {
                     grade = c[7].getContents();
@@ -41,6 +44,29 @@ public class ResourcesManager {
         }
         
         return records;
+    }
+    
+    public String verifyUserid (String userid) {
+        if (userid.length() == 8 && userid.startsWith("h")) {
+            return userid;
+        }
+        else {
+            throw new IllegalArgumentException ("Invalid UserID");
+        }
+    }
+    
+    public int verifyYear (String year) {
+        int value = 0;
+        try {
+            value = Integer.parseInt(year);
+            if (value < 0 || value > 9999) {
+                throw new IllegalArgumentException ("Invalid year");
+            }
+            return value;
+        }
+        catch (Exception ex) {
+            throw new IllegalArgumentException ("Invalid year");
+        }
     }
     
     public void writeRIERecords (ArrayList<Record> records, File outFile) throws IOException {
@@ -78,7 +104,7 @@ public class ResourcesManager {
             Sheet sheet = wb.getSheet(0);
             for (int i = 1; i < sheet.getRows(); i++) {
                 Cell[] c = sheet.getRow(i);
-                String userid = c[0].getContents();
+                String userid = verifyUserid(c[0].getContents());
                 String name = c[1].getContents();
                 students.add(new Student(userid, name));
             }
