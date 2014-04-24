@@ -1,6 +1,7 @@
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -22,12 +23,12 @@ public class RecordTableModel extends AbstractTableModel {
     }
     
     public void exportRIERecords () throws IOException {
-        if (!columnNames.equals(Record.columnNames)) {
+        if (!Arrays.equals(columnNames, Record.columnNames)) {
             throw new IllegalStateException ("Not storing RIE Records now");
         }
         ArrayList<Record> records = new ArrayList<> ();
-        for (int i = 0; i < data.length; i++) {
-            records.add(Record.fromArray(data[i]));
+        for (Object[] row : data) {
+            records.add(Record.fromArray(row));
         }
         rm.writeRIERecords(records);
     }
@@ -41,12 +42,12 @@ public class RecordTableModel extends AbstractTableModel {
     }
     
     public void exportStudents () throws IOException {
-        if (!columnNames.equals(Student.columnNames)) {
+        if (!Arrays.equals(columnNames, Student.columnNames)) {
             throw new IllegalStateException ("Not storing Students now");
         }
         ArrayList<Student> students = new ArrayList<> ();
-        for (int i = 0; i < data.length; i++) {
-            students.add(Student.fromArray(data[i]));
+        for (Object[] row : data) {
+            students.add(Student.fromArray(row));
         }
         rm.writeStudents(students);
     }
@@ -59,6 +60,10 @@ public class RecordTableModel extends AbstractTableModel {
     public void setData (Object[][] data) {
         this.data = data;
         this.fireTableDataChanged();
+    }
+    
+    public Object[][] getData () {
+        return data;
     }
     
     public ResourcesManager getResourcesManager () {
