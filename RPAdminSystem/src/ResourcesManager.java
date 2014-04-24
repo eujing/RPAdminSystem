@@ -14,11 +14,11 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
 public class ResourcesManager {
-    public ArrayList<Record> readRIERecords () throws IOException {
+    public ArrayList<Record> readRIERecords (File inFile) throws IOException {
         ArrayList<Record> records = new ArrayList<> ();
         
         try {
-            Workbook wb = Workbook.getWorkbook(new File ("RIE_records.xls"));
+            Workbook wb = Workbook.getWorkbook(inFile);
             Sheet sheet = wb.getSheet(0);
             for (int i = 1; i < sheet.getRows(); i++) {
                 Cell[] c = sheet.getRow(i);
@@ -43,8 +43,11 @@ public class ResourcesManager {
         return records;
     }
     
-    public void writeRIERecords (ArrayList<Record> records) throws IOException {
-        WritableWorkbook wb = Workbook.createWorkbook(new File ("RIE_records.xls"));
+    public void writeRIERecords (ArrayList<Record> records, File outFile) throws IOException {
+        if (!outFile.getName().endsWith(".xls")) {
+            outFile = new File (outFile.getName() + ".xls");
+        }
+        WritableWorkbook wb = Workbook.createWorkbook(outFile);
         wb.createSheet("RIE Records", 0);
         WritableSheet sheet = wb.getSheet(0);
         
@@ -67,11 +70,11 @@ public class ResourcesManager {
         }
     }
     
-    public ArrayList<Student> readStudents () throws IOException {
+    public ArrayList<Student> readStudents (File inFile) throws IOException {
         ArrayList<Student> students = new ArrayList<> ();
         
         try {
-            Workbook wb = Workbook.getWorkbook(new File ("students.xls"));
+            Workbook wb = Workbook.getWorkbook(inFile);
             Sheet sheet = wb.getSheet(0);
             for (int i = 1; i < sheet.getRows(); i++) {
                 Cell[] c = sheet.getRow(i);
@@ -87,8 +90,11 @@ public class ResourcesManager {
         return students;
     }
     
-    public void writeStudents (ArrayList<Student> students) throws IOException {
-        WritableWorkbook wb = Workbook.createWorkbook(new File ("Non_submissions.xls"));
+    public void writeStudents (ArrayList<Student> students, File outFile) throws IOException {
+        if (!outFile.getName().endsWith(".xls")) {
+            outFile = new File (outFile.getName() + ".xls");
+        }
+        WritableWorkbook wb = Workbook.createWorkbook(outFile);
         wb.createSheet("Students", 0);
         WritableSheet sheet = wb.getSheet(0);
         

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.junit.After;
@@ -33,7 +34,7 @@ public class ModelTest {
         
         ResourcesManager rm = new ResourcesManager ();
         try {
-            ArrayList<Record> records = rm.readRIERecords();
+            ArrayList<Record> records = rm.readRIERecords(new File ("RIE_records.xls"));
             model.setRIERecords(records);
             
             Object[][] modelData = model.getData();
@@ -51,7 +52,7 @@ public class ModelTest {
             model.setValueAt("Test", 0, 0);
             assertEquals ("Test", model.getValueAt(0, 0));
             
-            ArrayList<Student> students = rm.readStudents();
+            ArrayList<Student> students = rm.readStudents(new File ("students.xls"));
             model.setStudents(students);
             
             modelData = model.getData();

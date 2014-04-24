@@ -1,4 +1,5 @@
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class RecordTableModel extends AbstractTableModel {
         setData (array);
     }
     
-    public void exportRIERecords () throws IOException {
+    public void exportRIERecords (File outFile) throws IOException {
         if (!Arrays.equals(columnNames, Record.columnNames)) {
             throw new IllegalStateException ("Not storing RIE Records now");
         }
@@ -30,7 +31,7 @@ public class RecordTableModel extends AbstractTableModel {
         for (Object[] row : data) {
             records.add(Record.fromArray(row));
         }
-        rm.writeRIERecords(records);
+        rm.writeRIERecords(records, outFile);
     }
     
     public void setStudents (ArrayList<Student> students) throws IOException {
@@ -41,7 +42,7 @@ public class RecordTableModel extends AbstractTableModel {
         setData (array);
     }
     
-    public void exportStudents () throws IOException {
+    public void exportStudents (File outFile) throws IOException {
         if (!Arrays.equals(columnNames, Student.columnNames)) {
             throw new IllegalStateException ("Not storing Students now");
         }
@@ -49,7 +50,7 @@ public class RecordTableModel extends AbstractTableModel {
         for (Object[] row : data) {
             students.add(Student.fromArray(row));
         }
-        rm.writeStudents(students);
+        rm.writeStudents(students, outFile);
     }
     
     public void setColumnNames (String[] columnNames) {
