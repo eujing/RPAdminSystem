@@ -20,7 +20,7 @@ public class ResourcesManager {
         try {
             Workbook wb = Workbook.getWorkbook(inFile);
             Sheet sheet = wb.getSheet(0);
-            if (sheet.getColumns() != 7 || sheet.getColumns() != 8) {
+            if (sheet.getColumns() != 7 && sheet.getColumns() != 8) {
                 throw new IllegalArgumentException ("Invalid RIE records file");
             }
             for (int i = 1; i < sheet.getRows(); i++) {

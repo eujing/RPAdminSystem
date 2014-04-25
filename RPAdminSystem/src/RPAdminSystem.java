@@ -1,3 +1,6 @@
+
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author eujing
@@ -9,6 +12,7 @@ public class RPAdminSystem extends javax.swing.JFrame {
         controller = new RecordTableController(tbRecords);
         tbRecords.setModel(controller.getModel());
         controller.changeDisplay("RIE Records");
+        tbRecords.setRowSorter(new TableRowSorter (controller.getModel()));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -20,13 +24,26 @@ public class RPAdminSystem extends javax.swing.JFrame {
     private void initComponents() {
 
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbRecords = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cbDisplay = new javax.swing.JComboBox();
         bExport = new javax.swing.JButton();
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,20 +75,21 @@ public class RPAdminSystem extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Administrator Panel"));
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setText("Display");
-        jPanel2.add(jLabel1);
+        jPanel4.add(jLabel1);
 
         cbDisplay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "RIE Records", "Non submissions", "Synopsis Discrepencies" }));
         cbDisplay.addActionListener(new java.awt.event.ActionListener() {
@@ -79,7 +97,7 @@ public class RPAdminSystem extends javax.swing.JFrame {
                 cbDisplayActionPerformed(evt);
             }
         });
-        jPanel2.add(cbDisplay);
+        jPanel4.add(cbDisplay);
 
         bExport.setText("Export");
         bExport.addActionListener(new java.awt.event.ActionListener() {
@@ -87,7 +105,9 @@ public class RPAdminSystem extends javax.swing.JFrame {
                 bExportActionPerformed(evt);
             }
         });
-        jPanel2.add(bExport);
+        jPanel4.add(bExport);
+
+        jPanel2.add(jPanel4, java.awt.BorderLayout.LINE_START);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
@@ -149,6 +169,8 @@ public class RPAdminSystem extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbRecords;
     // End of variables declaration//GEN-END:variables

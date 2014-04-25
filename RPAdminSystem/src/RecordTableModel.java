@@ -13,7 +13,13 @@ public class RecordTableModel extends AbstractTableModel {
 
     private String[] columnNames;
     private Object[][] data;
-    private ResourcesManager rm = new ResourcesManager ();
+    private ResourcesManager rm;
+    private boolean changed;
+    
+    public RecordTableModel () {
+        rm = new ResourcesManager ();
+        changed = false;
+    }
     
     public void setRIERecords (ArrayList<Record> records) throws IOException {
         Object[][] array = new Object[records.size()][];
@@ -71,6 +77,14 @@ public class RecordTableModel extends AbstractTableModel {
         return rm;
     }
     
+    public boolean getChanged () {
+        return changed;
+    }
+    
+    public void setChanged (boolean changed) {
+        this.changed = changed;
+    }
+    
     @Override
     public int getRowCount() {
         if (data == null) {
@@ -113,6 +127,7 @@ public class RecordTableModel extends AbstractTableModel {
     @Override
     public void setValueAt (Object value, int row, int col) {
         data[row][col] = value;
+        changed = true;
         fireTableCellUpdated(row, col);
     }
 }

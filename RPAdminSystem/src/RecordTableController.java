@@ -3,18 +3,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableColumn;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -23,6 +18,7 @@ import javax.swing.table.TableColumn;
 public class RecordTableController {
     RecordTableModel model = new RecordTableModel ();
     JTable tbRecords;
+    String currentDisplay;
     
     public RecordTableController (JTable tbRecords) {
         this.tbRecords = tbRecords;
@@ -33,33 +29,50 @@ public class RecordTableController {
     }
     
     public void changeDisplay (String option) {
+        if (model.getChanged()) {
+            int reply = JOptionPane.showConfirmDialog(null, "There are unsaved edits, would you like to export the current table?");
+            if (reply == JOptionPane.YES_OPTION) {
+                if (currentDisplay != null) {
+                    exportRecords (currentDisplay);
+                }
+            }
+            model.setChanged(false);
+        }
+        
         JFileChooser chooser = new JFileChooser ();
         FileNameExtensionFilter filter = new FileNameExtensionFilter ("Excel 2007", "xls");
         chooser.setFileFilter (filter);
-        switch (option) {
-            case "RIE Records":
-                chooser.setDialogTitle ("Open RIE records file");
-                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    displayRIERecords (chooser.getSelectedFile());
-                }
-                break;
-            case "Non submissions":
-                File records = null;
-                File students = null;
-                chooser.setDialogTitle ("Open RIE records file");
-                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    records = chooser.getSelectedFile();
-                }
-                chooser.setDialogTitle ("Open students list file");
-                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    students = chooser.getSelectedFile();
-                }
-                if (records != null && students != null) {
-                    displayNonSubmissions (records, students);
-                }
-                break;
-            case "Synopsis Discrepencies":
-                break;
+        try {
+            switch (option) {
+                case "RIE Records":
+                    chooser.setDialogTitle ("Open RIE records file");
+                    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                        displayRIERecords (chooser.getSelectedFile());
+                        currentDisplay = "RIE Records";
+                    }
+                    break;
+                case "Non submissions":
+                    File records = null;
+                    File students = null;
+                    chooser.setDialogTitle ("Open RIE records file");
+                    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                        records = chooser.getSelectedFile();
+                    }
+                    chooser.setDialogTitle ("Open students list file");
+                    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                        students = chooser.getSelectedFile();
+                    }
+                    if (records != null && students != null) {
+                        displayNonSubmissions (records, students);
+                        currentDisplay = "Non submissions";
+                    }
+                    break;
+                case "Synopsis Discrepencies":
+                    break;
+            }
+        }
+        catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
     
