@@ -1,9 +1,10 @@
+package RPAdminSystem;
+
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -36,7 +37,9 @@ public class RecordTableController {
                     exportRecords (currentDisplay);
                 }
             }
-            model.setChanged(false);
+            else {
+                model.setChanged(false);
+            }
         }
         
         JFileChooser chooser = new JFileChooser ();
@@ -137,9 +140,8 @@ public class RecordTableController {
                         model.exportStudents(chooser.getSelectedFile());
                         JOptionPane.showMessageDialog(null, "Non submissions successfully exported!");
                         break;
-                    case "Synopsis Discrepencies":
-                        break;
                 }
+                model.setChanged(false);
             }
             catch (IOException ex) {
                 ex.printStackTrace ();

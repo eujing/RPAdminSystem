@@ -1,3 +1,5 @@
+package RPAdminSystem;
+
 
 import javax.swing.table.TableRowSorter;
 
@@ -5,9 +7,9 @@ import javax.swing.table.TableRowSorter;
  *
  * @author eujing
  */
-public class RPAdminSystem extends javax.swing.JFrame {
+public class RecordTableView extends javax.swing.JFrame {
     RecordTableController controller;
-    public RPAdminSystem() {
+    public RecordTableView() {
         initComponents();
         controller = new RecordTableController(tbRecords);
         tbRecords.setModel(controller.getModel());
@@ -144,20 +146,20 @@ public class RPAdminSystem extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RPAdminSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecordTableView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RPAdminSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecordTableView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RPAdminSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecordTableView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RPAdminSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecordTableView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RPAdminSystem().setVisible(true);
+                new RecordTableView().setVisible(true);
             }
         });
     }

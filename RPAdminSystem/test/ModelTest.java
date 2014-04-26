@@ -1,3 +1,7 @@
+import RPAdminSystem.Record;
+import RPAdminSystem.Student;
+import RPAdminSystem.ResourcesManager;
+import RPAdminSystem.RecordTableModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

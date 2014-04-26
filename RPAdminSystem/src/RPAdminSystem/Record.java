@@ -1,3 +1,5 @@
+package RPAdminSystem;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,10 +31,6 @@ public class Record {
         this.award = award;
         this.year = year;
         this.grade = grade;
-    }
-    
-    public Record (String userid, String category, String desc1, int year) {
-        this(userid, category, "", desc1, "", "", year, "");
     }
     
     public static Record fromArray (Object[] array) {
