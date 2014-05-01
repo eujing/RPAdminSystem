@@ -5,33 +5,35 @@ package RPAdminSystem;
  * @author eujing
  */
 
-import au.com.bytecode.opencsv.CSV;
-import au.com.bytecode.opencsv.CSVReadProc;
-import au.com.bytecode.opencsv.CSVWriteProc;
-import au.com.bytecode.opencsv.CSVWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import jxl.*;
 import jxl.read.biff.BiffException;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 
 public class ResourcesManager {
     public ArrayList<RIERecord> readRIERecords (File inFile) throws IOException {
         final ArrayList<RIERecord> records = new ArrayList<> ();
         
         if (inFile.getName().endsWith(".csv")) {
-            CSV csv = CSV.separator(';').quote('"').create();
-            csv.read(inFile, new CSVReadProc() {
-                @Override
-                public void procRow (int rowIndex, String... values) {
-                    records.add(RIERecord.fromArray(values));
+            CSVParser parser = new CSVParser(new FileReader(inFile), CSVFormat.RFC4180);
+            for (CSVRecord csvRecord : parser.getRecords()) {
+                Object[] array = new Object[csvRecord.size()];
+                for (int i = 0; i < array.length; i++) {
+                    array[i] = csvRecord.get(i);
                 }
-            });
+                records.add(RIERecord.fromArray(array));
+            }
         }
         else {
             try {
@@ -82,45 +84,41 @@ public class ResourcesManager {
             }
             return value;
         }
-        catch (Exception ex) {
+        catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException ("Invalid year");
         }
     }
 
     public void writeRIERecords (final ArrayList<RIERecord> records, File outFile) throws IOException {
         if (outFile.getName().endsWith(".csv")) {
-            CSV csv = CSV.separator(';').quote('"').create();
-            csv.write(outFile, new CSVWriteProc() {
-                @Override
-                public void process (CSVWriter out){
-                    for (RIERecord r : records) {
-                        Object[] array = r.toArray();
-                        out.writeNext(Arrays.asList(array).toArray(new String[array.length]));
-                    }
-                }
-            });
-        }
-        else if (!outFile.getName().endsWith(".xls")) {
-            outFile = new File (outFile.getName() + ".xls");
-        }
-        
-        WritableWorkbook wb = Workbook.createWorkbook(outFile);
-        wb.createSheet("RIE Records", 0);
-        WritableSheet sheet = wb.getSheet(0);
-        
-        try {
-            for (int i = 0; i < records.size(); i++) {
-                Object[] array = records.get(i).toArray();
-                for (int j = 0; j < array.length; j++) {
-                    sheet.addCell(new Label (j, i, array[j].toString()));
+            try (FileWriter out = new FileWriter(outFile); CSVPrinter printer = new CSVPrinter (out, CSVFormat.RFC4180.withDelimiter(';'))) {
+                for (RIERecord r : records) {
+                    printer.printRecord(r.toArray());
                 }
             }
-            
-            wb.write();
-            wb.close();
         }
-        catch (WriteException ex) {
-            ex.printStackTrace();
+        else  {
+            if (!outFile.getName().endsWith(".xls")) {
+                outFile = new File (outFile.getName() + ".xls");
+            }
+            WritableWorkbook wb = Workbook.createWorkbook(outFile);
+            wb.createSheet("RIE Records", 0);
+            WritableSheet sheet = wb.getSheet(0);
+
+            try {
+                for (int i = 0; i < records.size(); i++) {
+                    Object[] array = records.get(i).toArray();
+                    for (int j = 0; j < array.length; j++) {
+                        sheet.addCell(new Label (j, i, array[j].toString()));
+                    }
+                }
+
+                wb.write();
+                wb.close();
+            }
+            catch (WriteException ex) {
+                ex.printStackTrace();
+            }
         }
     }
     
@@ -128,13 +126,14 @@ public class ResourcesManager {
         final ArrayList<Student> students = new ArrayList<> ();
         
         if (inFile.getName().endsWith("csv")) {
-            CSV csv = CSV.separator(';').quote('"').create();
-            csv.read(inFile, new CSVReadProc() {
-                @Override
-                public void procRow (int rowIndex, String... values) {
-                    students.add(Student.fromArray(values));
+            CSVParser parser = new CSVParser(new FileReader(inFile), CSVFormat.RFC4180);
+            for (CSVRecord csvRecord : parser.getRecords()) {
+                Object[] array = new Object[csvRecord.size()];
+                for (int i = 0; i < array.length; i++) {
+                    array[i] = csvRecord.get(i);
                 }
-            });
+                students.add(Student.fromArray(array));
+            }
         }
         else {
             try {
@@ -157,35 +156,34 @@ public class ResourcesManager {
     
     public void writeStudents (final ArrayList<Student> students, File outFile) throws IOException {
         if (outFile.getName().endsWith(".csv")) {
-            CSV csv = CSV.separator(';').quote('"').create();
-            csv.write(outFile, new CSVWriteProc() {
-                @Override
-                public void process (CSVWriter out){
-                    for (Student s : students) {
-                        Object[] array = s.toArray();
-                        out.writeNext(Arrays.asList(array).toArray(new String[array.length]));
-                    }
-                }
-            });
-        }
-        
-        WritableWorkbook wb = Workbook.createWorkbook(outFile);
-        wb.createSheet("Students", 0);
-        WritableSheet sheet = wb.getSheet(0);
-        
-        try {
-            for (int i = 0; i < students.size(); i++) {
-                Object[] array = students.get(i).toArray();
-                for (int j = 0; j < array.length; j++) {
-                    sheet.addCell(new Label (j, i, array[j].toString()));
+            try (FileWriter out = new FileWriter(outFile); CSVPrinter printer = new CSVPrinter (out, CSVFormat.RFC4180.withDelimiter(';'))) {
+                for (Student s : students) {
+                    printer.printRecord(s.toArray());
                 }
             }
-            
-            wb.write();
-            wb.close();
         }
-        catch (WriteException ex) {
-            ex.printStackTrace();
+        else {
+            if (!outFile.getName().endsWith(".xls")) {
+                outFile = new File (outFile.getName() + ".xls");
+            }
+            WritableWorkbook wb = Workbook.createWorkbook(outFile);
+            wb.createSheet("Students", 0);
+            WritableSheet sheet = wb.getSheet(0);
+
+            try {
+                for (int i = 0; i < students.size(); i++) {
+                    Object[] array = students.get(i).toArray();
+                    for (int j = 0; j < array.length; j++) {
+                        sheet.addCell(new Label (j, i, array[j].toString()));
+                    }
+                }
+
+                wb.write();
+                wb.close();
+            }
+            catch (WriteException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

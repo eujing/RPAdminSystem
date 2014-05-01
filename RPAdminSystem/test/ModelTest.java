@@ -38,7 +38,7 @@ public class ModelTest {
         
         ResourcesManager rm = new ResourcesManager ();
         try {
-            ArrayList<RIERecord> records = rm.readRIERecords(new File ("RIE_records.xls"));
+            ArrayList<RIERecord> records = rm.readRIERecords(new File ("RIE_records.csv"));
             model.setRIERecords(records);
             
             Object[][] modelData = model.getData();
@@ -56,7 +56,7 @@ public class ModelTest {
             model.setValueAt("Test", 0, 0);
             assertEquals ("Test", model.getValueAt(0, 0));
             
-            ArrayList<Student> students = rm.readStudents(new File ("students.xls"));
+            ArrayList<Student> students = rm.readStudents(new File ("students.csv"));
             model.setStudents(students);
             
             modelData = model.getData();
