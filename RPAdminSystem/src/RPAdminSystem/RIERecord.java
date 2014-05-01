@@ -1,16 +1,16 @@
-package RPAdminSystem;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+package RPAdminSystem;
+
 /**
  *
  * @author eujing
  */
-public class Record {
+public class RIERecord {
     String userid;
     String category;
     String title;
@@ -22,7 +22,7 @@ public class Record {
     
     public static final String[] columnNames = new String[] {"UserID", "Category", "Title", "Desc1", "Desc2", "Award", "Year", "Grade"};
     
-    public Record (String userid, String category, String title, String desc1, String desc2, String award, int year, String grade) {
+    public RIERecord (String userid, String category, String title, String desc1, String desc2, String award, int year, String grade) {
         this.userid = userid;
         this.category = category;
         this.title = title;
@@ -33,17 +33,17 @@ public class Record {
         this.grade = grade;
     }
     
-    public static Record fromArray (Object[] array) {
-        if (array.length != 8) throw new IllegalArgumentException ("Wrong sized array");
-        return new Record (
+    public static RIERecord fromArray (Object[] array) {
+        if (array.length != 7 && array.length != 8) throw new IllegalArgumentException ("Wrong sized array");
+        return new RIERecord (
                 (String) array[0],
                 (String) array[1],
                 (String) array[2],
                 (String) array[3],
                 (String) array[4],
                 (String) array[5],
-                (Integer) array[6],
-                (String) array[7]
+                array[6] instanceof String ? Integer.parseInt((String)array[6]) : (Integer) array[6],
+                array.length == 8 ? (String) array[7] : ""
         );
     }
     
@@ -126,11 +126,11 @@ public class Record {
     
     @Override
     public boolean equals (Object o) {
-        if (!(o instanceof Record)) {
+        if (!(o instanceof RIERecord)) {
             return false;
         }
         
-        Record r = (Record) o;
+        RIERecord r = (RIERecord) o;
         return userid.equals(r.userid) &&
                 category.equals(r.category) &&
                 title.equals(r.title) &&

@@ -23,7 +23,7 @@ public class RecordTableModel extends AbstractTableModel {
         changed = false;
     }
     
-    public void setRIERecords (ArrayList<Record> records) throws IOException {
+    public void setRIERecords (ArrayList<RIERecord> records) throws IOException {
         Object[][] array = new Object[records.size()][];
         for (int i = 0; i < array.length; i++) {
             array[i] = records.get(i).toArray();
@@ -32,12 +32,12 @@ public class RecordTableModel extends AbstractTableModel {
     }
     
     public void exportRIERecords (File outFile) throws IOException {
-        if (!Arrays.equals(columnNames, Record.columnNames)) {
+        if (!Arrays.equals(columnNames, RIERecord.columnNames)) {
             throw new IllegalStateException ("Not storing RIE Records now");
         }
-        ArrayList<Record> records = new ArrayList<> ();
+        ArrayList<RIERecord> records = new ArrayList<> ();
         for (Object[] row : data) {
-            records.add(Record.fromArray(row));
+            records.add(RIERecord.fromArray(row));
         }
         rm.writeRIERecords(records, outFile);
     }

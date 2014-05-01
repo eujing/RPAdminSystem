@@ -43,7 +43,7 @@ public class RecordTableController {
         }
         
         JFileChooser chooser = new JFileChooser ();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter ("Excel 2007", "xls");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter ("Spreadsheets", "xls", "csv");
         chooser.setFileFilter (filter);
         try {
             switch (option) {
@@ -81,7 +81,7 @@ public class RecordTableController {
     
     private void displayRIERecords (File inFile) {
         try {
-            model.setColumnNames(Record.columnNames);
+            model.setColumnNames(RIERecord.columnNames);
             TableColumn gradeColumn = tbRecords.getColumnModel().getColumn(7);
             JComboBox cbGrades = new JComboBox();
             cbGrades.addItem("");
@@ -100,14 +100,14 @@ public class RecordTableController {
         try {
             model.setColumnNames(Student.columnNames);
             ArrayList<Student> students = model.getResourcesManager().readStudents(studentsInFile);
-            ArrayList<Record> records = model.getResourcesManager().readRIERecords(recordsInFile);
+            ArrayList<RIERecord> records = model.getResourcesManager().readRIERecords(recordsInFile);
             ArrayList<Student> nonSubmissions = new ArrayList <> ();
             final String ARP_DETAILS = "Details of Advanced Research Project";
             
             for (Student s : students) {
                 boolean submitted = false;
                 
-                for (Record r : records) {
+                for (RIERecord r : records) {
                     if (r.getCategory().equals(ARP_DETAILS) && s.getUserid().equals(r.getUserid())) {
                         submitted = true;
                         break;

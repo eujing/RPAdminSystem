@@ -21,16 +21,16 @@ public class Student {
         this.name = name;
     }
     
+    public static Student fromArray (Object[] array) {
+        if (array.length != 2) throw new IllegalArgumentException ("Wrong sized array");
+        return new Student ((String) array[0], (String) array[1]);
+    }
+
     public Object[] toArray () {
         return new Object[] {
             (Object) userid,
             (Object) name
         };
-    }
-    
-    public static Student fromArray (Object[] array) {
-        if (array.length != 2) throw new IllegalArgumentException ("Wrong sized array");
-        return new Student ((String) array[0], (String) array[1]);
     }
     
     public String getUserid () {

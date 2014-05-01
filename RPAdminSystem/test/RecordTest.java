@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import RPAdminSystem.Record;
+import RPAdminSystem.RIERecord;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -27,7 +27,7 @@ public class RecordTest {
     int year = 2014;
     String grade = "Merit";
     
-    Record r;
+    RIERecord r;
     
     public RecordTest() {
     }
@@ -42,7 +42,7 @@ public class RecordTest {
     
     @Before
     public void setUp() {
-        r = new Record (userid, category, title, desc1, desc2, award, year, grade);
+        r = new RIERecord (userid, category, title, desc1, desc2, award, year, grade);
     }
     
     @After
@@ -67,14 +67,14 @@ public class RecordTest {
         
         Assert.assertArrayEquals(array, r.toArray());
         
-        assertEquals(r, Record.fromArray(array));
+        assertEquals(r, RIERecord.fromArray(array));
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void badArrayTest() {
         Object[] array = new Object [] {(Object) userid, (Object) grade};
         
-        assertEquals(r, Record.fromArray(array));
+        assertEquals(r, RIERecord.fromArray(array));
     }
     
     @Test

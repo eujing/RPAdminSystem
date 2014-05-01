@@ -1,4 +1,4 @@
-import RPAdminSystem.Record;
+import RPAdminSystem.RIERecord;
 import RPAdminSystem.Student;
 import RPAdminSystem.ResourcesManager;
 import RPAdminSystem.RecordTableModel;
@@ -38,7 +38,7 @@ public class ModelTest {
         
         ResourcesManager rm = new ResourcesManager ();
         try {
-            ArrayList<Record> records = rm.readRIERecords(new File ("RIE_records.xls"));
+            ArrayList<RIERecord> records = rm.readRIERecords(new File ("RIE_records.xls"));
             model.setRIERecords(records);
             
             Object[][] modelData = model.getData();
@@ -82,11 +82,11 @@ public class ModelTest {
     @Test
     public void columnTest () {
         assertEquals (0, model.getColumnCount());
-        model.setColumnNames(Record.columnNames);
+        model.setColumnNames(RIERecord.columnNames);
         
-        assertEquals (Record.columnNames.length, model.getColumnCount());
+        assertEquals (RIERecord.columnNames.length, model.getColumnCount());
         for (int i = 0; i < model.getColumnCount(); i++) {
-            assertEquals (Record.columnNames[i], model.getColumnName(i));
+            assertEquals (RIERecord.columnNames[i], model.getColumnName(i));
         }
         
         model.setColumnNames(Student.columnNames);

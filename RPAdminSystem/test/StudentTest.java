@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-import RPAdminSystem.Record;
 import RPAdminSystem.Student;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,7 +57,7 @@ public class StudentTest {
     public void badArrayTest () {
         Object[] array = new Object [] {(Object) userid};
         
-        assertEquals(s, Record.fromArray(array));
+        assertEquals(s, Student.fromArray(array));
     }
     
     @Test
