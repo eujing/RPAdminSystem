@@ -26,7 +26,7 @@ public class ResourcesManager {
         final ArrayList<RIERecord> records = new ArrayList<> ();
         
         if (inFile.getName().endsWith(".csv")) {
-            CSVParser parser = new CSVParser(new FileReader(inFile), CSVFormat.RFC4180);
+            CSVParser parser = new CSVParser(new FileReader(inFile), CSVFormat.RFC4180.withDelimiter(';'));
             for (CSVRecord csvRecord : parser.getRecords()) {
                 Object[] array = new Object[csvRecord.size()];
                 for (int i = 0; i < array.length; i++) {
@@ -126,7 +126,7 @@ public class ResourcesManager {
         final ArrayList<Student> students = new ArrayList<> ();
         
         if (inFile.getName().endsWith("csv")) {
-            CSVParser parser = new CSVParser(new FileReader(inFile), CSVFormat.RFC4180);
+            CSVParser parser = new CSVParser(new FileReader(inFile), CSVFormat.RFC4180.withDelimiter(';'));
             for (CSVRecord csvRecord : parser.getRecords()) {
                 Object[] array = new Object[csvRecord.size()];
                 for (int i = 0; i < array.length; i++) {
