@@ -32,19 +32,31 @@ public class ModelTest {
         model = null;
     }
 
+    /*
+    Tests the getting and setting methods of the model 
+    to ensure the consistency of records after being stored in the model
+    */
     @Test
     public void dataTest () {
+        //Check the model is empty before any data is set
         assertEquals (0, model.getRowCount());
         
         ResourcesManager rm = new ResourcesManager ();
         try {
+            //Retrieve records from the file system (Original Records)
             ArrayList<RIERecord> records = rm.readRIERecords(new File ("RIE_records.csv"));
+            
+            //Set records as current data in the model
             model.setRIERecords(records);
             
+            //Retrieve records from the model (Retrieved Records)
             Object[][] modelData = model.getData();
             
+            //Check the number of records is consistent
             assertEquals (records.size(), model.getRowCount());
             assertEquals (records.size(), modelData.length);
+            
+            //Compare each record against the original for consistency
             for (int i = 0; i < records.size(); i++) {
                 Object[] row = records.get(i).toArray();
                 Assert.assertArrayEquals (row, modelData[i]);
@@ -53,16 +65,24 @@ public class ModelTest {
                 }
             }
             
+            //Ensure edited data is consistent
             model.setValueAt("Test", 0, 0);
             assertEquals ("Test", model.getValueAt(0, 0));
             
+            //Retrieve records from the file system (Original Records)
             ArrayList<Student> students = rm.readStudents(new File ("students.csv"));
+            
+            //Set records as current data in the model
             model.setStudents(students);
             
+            //Retrieve records from the model (Retrieved Records)
             modelData = model.getData();
             
+            //Check the number of records is consistent
             assertEquals (students.size(), model.getRowCount());
             assertEquals (students.size(), modelData.length);
+            
+            //Compare each record against the original for consistency
             for (int i = 0; i < students.size(); i++) {
                 Object[] row = students.get(i).toArray();
                 Assert.assertArrayEquals(row, modelData[i]);
@@ -71,6 +91,7 @@ public class ModelTest {
                 }
             }
             
+            //Ensure edited data is consistent
             model.setValueAt("Test", 0, 0);
             assertEquals ("Test", model.getValueAt(0, 0));
         }
@@ -79,19 +100,30 @@ public class ModelTest {
         }
     }
     
+    /*
+    Test the dynamic column names functionality
+    */
     @Test
     public void columnTest () {
+        //Check there are no columns before columns are set
         assertEquals (0, model.getColumnCount());
+        
+        //Set RIE Record columns as the current columns
         model.setColumnNames(RIERecord.columnNames);
         
+        //Check the number of columns is consistent
         assertEquals (RIERecord.columnNames.length, model.getColumnCount());
+        //Check each column name is consistent
         for (int i = 0; i < model.getColumnCount(); i++) {
             assertEquals (RIERecord.columnNames[i], model.getColumnName(i));
         }
         
+        //Set Student columns as the current columns
         model.setColumnNames(Student.columnNames);
         
+        //Check the number is consistent
         assertEquals (Student.columnNames.length, model.getColumnCount());
+        //Check each column name is consistent
         for (int i = 0; i < model.getColumnCount(); i++) {
             assertEquals (Student.columnNames[i], model.getColumnName(i));
         }

@@ -6,10 +6,8 @@
 
 import RPAdminSystem.RIERecord;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,6 +16,12 @@ import static org.junit.Assert.*;
  * @author eujing
  */
 public class RecordTest {
+    /**
+     * There are no checks when creating a RIE Record from scratch as
+     * no RIE Record should be created from scratch, only via the ResourceManager
+     * where verification is carried out when loading from resources.
+     */
+    //Sample data
     String userid = "h0910000";
     String category = "Test category";
     String title = "Test title";
@@ -32,14 +36,6 @@ public class RecordTest {
     public RecordTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
         r = new RIERecord (userid, category, title, desc1, desc2, award, year, grade);
@@ -50,8 +46,18 @@ public class RecordTest {
         r = null;
     }
 
+    /**
+     * Tests the consistency of RIE Records when reduced to arrays and
+     * when creating records from arrays
+     * Partitions:
+     * array to array comparison
+     * record to record comparison
+     * invalid values (wrong array length)
+     * invalid values (wrong typed fields)
+     */
     @Test
     public void arrayTests() {
+        //Correct array
         Object[] array = new Object[] {
             (Object) userid,
             (Object) category,
@@ -63,22 +69,43 @@ public class RecordTest {
             (Object) grade
         };
         
-        
-        
+        //Test consistency of array form
         Assert.assertArrayEquals(array, r.toArray());
         
+        //Test consistency of record form
         assertEquals(r, RIERecord.fromArray(array));
     }
-    
+    //Invalid Values (Wrong length array)
     @Test(expected = IllegalArgumentException.class)
-    public void badArrayTest() {
+    public void badArrayTest1() {
         Object[] array = new Object [] {(Object) userid, (Object) grade};
         
         assertEquals(r, RIERecord.fromArray(array));
     }
+    //Invalid Values (Wrong typed field)
+    @Test(expected = IllegalArgumentException.class)
+    public void badArrayTest2() {
+        Object[] array = new Object[] {
+            (Object) userid,
+            (Object) category,
+            (Object) title,
+            (Object) desc1,
+            (Object) desc2,
+            (Object) award,
+            (Object) "NotANumber",
+            (Object) grade
+        };
+        
+        RIERecord.fromArray(array);
+    }
     
+    /**
+     * Ensure the consistency of fields from the get and set methods of the class
+     * There are no checks involved so partition testing is useless.
+     */
     @Test
     public void recordAttributes () {
+        //Check consistency of get methods
         assertEquals (userid, r.getUserid());
         assertEquals (category, r.getCategory());
         assertEquals (title, r.getTitle());
@@ -88,6 +115,7 @@ public class RecordTest {
         assertEquals (year, r.getYear());
         assertEquals (grade, r.getGrade());
         
+        //Check consistency of set methods
         r.setUserid ("h0910001");
         assertEquals ("h0910001", r.getUserid());
         r.setCategory ("Another category");
